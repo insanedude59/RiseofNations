@@ -1,0 +1,131 @@
+local debug_mode = true -- Adds debug printing in the console. (Optional)
+---
+
+local wally = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3", true))()
+local UnitESP = wally:CreateWindow("UnitESP")
+local debug_mode = true -- Adds debug printing in the console. (Optional)
+local players = game:GetService("Players")
+local player = players.LocalPlayer
+local gamemanager = workspace.GameManager
+
+
+local suffixes = {"K", "M", "B", "T", "Q", "Qu", "S", "Se", "O", "N", "D"}
+local function toSuffixString(n) -- Credit to woot3
+for i = #suffixes, 1, -1 do
+local v = math.pow(10, i * 3)
+if n >= v then
+return ("%.0f"):format(n / v) .. suffixes[i]
+end
+end
+return tostring(n)
+end
+
+local function getcountry()
+   return player:FindFirstChild("leaderstats").Country.Value
+end
+local updatetags = false
+local tagupdate = 10
+local alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+local tagname = ""
+for i = 1, 7 do
+local random = math.random(1, #alphabet)
+tagname = tagname..string.sub(alphabet, random, random)
+end
+
+local faketag = Instance.new("BillboardGui")
+faketag.Name = tagname
+faketag.Size = UDim2.new(1,0,1,0)
+faketag.Enabled = true
+faketag.AlwaysOnTop = true
+faketag.MaxDistance = 20
+local faketaglabel = Instance.new("TextLabel")
+faketaglabel.Parent = faketag
+faketaglabel.BackgroundTransparency = 1
+faketaglabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+faketaglabel.Text = "nil?"
+faketaglabel.Font = Enum.Font.Code
+faketaglabel.TextSize = 20
+
+local UnitESP = UnitESP:CreateFolder("UnitESP")
+UnitESP:Slider("Unit Update", {
+  min = 1;
+  max = 60;
+  precise = true;
+  
+}, function(v)
+  tagupdate = v;
+end)
+
+UnitESP:Button('Unit ESP', function()
+    
+ if updatetags == false then
+       updatetags = true
+       
+       for i,v in pairs(workspace.Units:GetChildren()) do
+           if not v:FindFirstChild(tagname) then
+               if v:FindFirstChild("Current") and v:FindFirstChild("Type") then
+                   local  tag = faketag:Clone()
+                    tag.Parent = v
+                    tag.Adornee = v
+                    if v.Type.Value == "Battleship" or "Destroyer" or "Frigate" then
+                     tag.TextLabel.Text = tostring(v.Type.Value).." - "..tostring(v.Current.Value / 100000)
+
+                        end
+                    tag.TextLabel.Text = v.Owner.Value.." - "..tostring(v.Type.Value).." - "..toSuffixString(v.Current.Value)
+                    tag.TextLabel:TweenSize(UDim2.new(0,600,0,200))
+                   if v.Owner.Value == player.Name then
+                        tag.TextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+                   end
+           elseif v:FindFirstChild(tagname) then
+               v:FindFirstChild(tagname).Enabled = true
+           end
+  else
+       updatetags = false
+       for i,v in pairs(workspace.Units:GetChildren()) do
+           if v:FindFirstChild(tagname) then
+               v:FindFirstChild(tagname).Enabled = false
+           end
+       end
+end
+end
+end
+
+workspace.Units.ChildAdded:Connect(function(child)
+   if updatetags == true then
+       if child:IsA("Part") then
+           if child ~= nil then
+               if child:FindFirstChild("Current") and v:FindFirstChild("Type") then
+                   local tag = faketag:Clone()
+                    tag.Parent = v
+                    tag.Adornee = v
+                    tag.TextLabel.Text = tostring(v.Type.Value).." - "..toSuffixString(v.Current.Value)
+                    tag.TextLabel:TweenSize(UDim2.new(0,600,0,200))
+                   if v.Owner.Value == player.Name then
+                        tag.TextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+                   end
+               end
+           end
+       end
+   end
+   end)
+end)
+
+workspace.Units.ChildAdded:Connect(function(child)
+   if updatetags == true then
+       if child:IsA("Part") then
+           if child ~= nil then
+               if child:FindFirstChild("Current") and v:FindFirstChild("Type") then
+                   local  tag = faketag:Clone()
+                    tag.Parent = v
+                    tag.Adornee = v
+                    tag.TextLabel.Text = tostring(v.Type.Value).." - "..toSuffixString(v.Current.Value)
+                   
+                    tag.TextLabel:TweenSize(UDim2.new(0,600,0,200))
+                   if v.Owner.Value == player.Name then
+                        tag.TextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+                   end
+               end
+           end
+       end
+   end
+end)
