@@ -3,7 +3,6 @@ local debug_mode = true -- Adds debug printing in the console. (Optional)
 
 local wally = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3", true))()
 local UnitESP = wally:CreateWindow("UnitESP")
-local debug_mode = true -- Adds debug printing in the console. (Optional)
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local gamemanager = workspace.GameManager
