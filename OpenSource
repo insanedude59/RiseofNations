@@ -9,7 +9,7 @@ local gamemanager = workspace.GameManager
 
 
 local suffixes = {"K", "M", "B", "T", "Q", "Qu", "S", "Se", "O", "N", "D"}
-local function toSuffixString(n) -- Credit to woot3
+local function toSuffixString(n)
 for i = #suffixes, 1, -1 do
 local v = math.pow(10, i * 3)
 if n >= v then
